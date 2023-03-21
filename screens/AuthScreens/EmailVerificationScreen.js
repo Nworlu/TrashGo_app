@@ -11,7 +11,7 @@ import {
 import Input from "../../components/Auth/Input";
 import FlatButton from "../../components/ui/FlatButton";
 import PrimaryButton from "../../components/ui/PrimaryButton";
-import { generateOtp, signup } from "../../util/http";
+import { forgotPass, generateOtp, signup } from "../../util/http";
 import { useState } from "react";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import colors from "../../constants/colors";
@@ -31,26 +31,38 @@ function EmailVerificationScreen({ route, navigation }) {
   function emailInputHandler(enterdValue) {
     setEmail(enterdValue);
   }
+
   async function confirmHandler() {
-    //   console.log(email)
     setIsAuthenticating(true)
     try {
       const user = await generateOtp({email:email});
-      console.log(user);
-      if (user) {
-       let item = Alert.alert(user.status, user.message);
-       if(!item){
+      Alert.alert('Verification', user.message)
+      if(user){
         navigation.navigate('VerifyOtpScreen')
-       }
-      } else {
-        setErrorMessage("INVALID EMAIL.PLEASE CHECK YOUR INPUT AND TRY AGAIN.");
-        console.log("EMAIL WAS INVALID.", email);
       }
     } catch (error) {
-      console.log(error);
-      setErrorMessage("SOMETHING WENT WRONG.PLEASE TRY AGAIN LATER.");
+        console.log(error.response.data.message)
+      Alert.alert('Verification', error.response.data.message)
     }
     setIsAuthenticating(false);
+  }
+
+  async function forgotPasswordHandler(){
+    setIsAuthenticating(true)
+    try {
+        const user = await forgotPass({email:email})
+        Alert.alert('Reset Password', user.message)
+        if(user){
+            navigation.navigate('VerifyOtpScreen',{
+                forgotPassword
+            })
+        }
+        console.log(user.message)
+    } catch (error) {
+        Alert.alert('Failed', error.response.data.error)
+    }
+    setIsAuthenticating(false);
+
   }
 
 //   async function confirmHandler() {
@@ -91,9 +103,14 @@ if (isAuthenticating) {
           </View>
         </KeyboardAvoidingView>
         <View>
-          <PrimaryButton onPress={confirmHandler} style={styles.button}>
+            {!forgotPassword && <PrimaryButton onPress={confirmHandler} style={styles.button}>
+            Verify 
+          </PrimaryButton>}
+          
+          {forgotPassword && <PrimaryButton onPress={forgotPasswordHandler} style={styles.button}>
             Continue
-          </PrimaryButton>
+          </PrimaryButton>}
+          
           {forgotPassword && (
             <FlatButton space={styles.margin} onPress={backToLoginHandler}>
               Back to Login

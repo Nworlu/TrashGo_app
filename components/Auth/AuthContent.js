@@ -23,22 +23,22 @@ function AuthContent({ isLogin, onAuthenticate }) {
     email = email.trim();
     password = password.trim();
 
-    const fullNameIsValid = fullName !== ''
-    const emailIsvalid = email.includes('@')
-    const passwordIsValid = password.length > 8
-    const phoneNumberIsVaild = isLogin?"":phoneNumber.length >=11
-    const passwordAreEqual = isLogin?"":password === passwordConfirm
-    if(!emailIsvalid || !passwordIsValid || (!isLogin && !fullNameIsValid|| !phoneNumberIsVaild || !passwordAreEqual )){
-            Alert.alert('Invalid input', 'Please check your entered credentials.');
-        setCredentialsInvalid({
-            fullName: !fullNameIsValid,
-            email: !emailIsvalid,
-            phoneNumber: !phoneNumberIsVaild,
-            password: !passwordIsValid,
-            passwordConfirm: !passwordAreEqual
-        })
-        return
-    }
+    // const fullNameIsValid = fullName !== ''
+    // const emailIsvalid = email.includes('@')
+    // const passwordIsValid = password.length > 8
+    // const phoneNumberIsVaild = isLogin?"":phoneNumber.length >=11
+    // const passwordAreEqual = isLogin?"":password === passwordConfirm
+    // if(!emailIsvalid || !passwordIsValid || (!isLogin && !fullNameIsValid|| !phoneNumberIsVaild || !passwordAreEqual )){
+    //         Alert.alert('Invalid input', 'Please check your entered credentials.');
+    //     setCredentialsInvalid({
+    //         fullName: !fullNameIsValid,
+    //         email: !emailIsvalid,
+    //         phoneNumber: !phoneNumberIsVaild,
+    //         password: !passwordIsValid,
+    //         passwordConfirm: !passwordAreEqual
+    //     })
+    //     return
+    // }
     isLogin
       ? onAuthenticate({ email, password })
       : onAuthenticate({

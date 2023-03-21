@@ -4,32 +4,47 @@ import Input from "../../components/Auth/Input";
 import FlatButton from "../../components/ui/FlatButton";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import PrimaryButton from "../../components/ui/PrimaryButton";
+import { resetPassword } from "../../util/http";
 
 function CreateNewPasswordScreen({route, navigation}) {
     const [isChangingPass, setIsChangingPass] = useState(false)
-    let forgotPassword = route.params?.forgotP
+    const [password, setPassword] = useState('')
+    const [passwordConfirm,setPasswordConfirm] = useState('')
+    let forgotPassword = route.params?.forgotPassword
     forgotPassword = !!forgotPassword
     console.log(forgotPassword)
-    function backToLoginHandler(){
-        navigation.goBack()
+    
+    function updateInput(inputType, enterdValue){
+        switch(inputType){
+            case "password":
+                setPassword(enterdValue)
+                break;
+            case "passwordConfirm":
+                setPasswordConfirm(enterdValue)
+                break;
+        }
     }
+
     async function ChangePasswordHandler(){
         setIsChangingPass(true)
         try {
-            // setTimeout(()=>{
-                if(!isChangingPass){
-                    navigation.navigate('LoginScreen')
-                    Alert.alert('SuccessFully')
-                }
-            // },4000)
+            const user = await resetPassword({password:password,passwordConfirm:passwordConfirm})
+            if(user){
+                Alert.alert('Successful', "You have Created a new password Please login")
+                navigation.replace('LoginScreen')
+            }
+            console.log(user)
         } catch (error) {
-            Alert.alert('Failed')
-            setIsChangingPass(false)
+            console.log(error.response)
+            Alert.alert('Failed', error.response.data.message)
         }
+        setIsChangingPass(true)
+
     }
     if(isChangingPass){
-        return <LoadingOverlay message={'Changing password'} />
+        return <LoadingOverlay message={'Changing User password'} />
     }
+    console.log(password, passwordConfirm)
   return (
 <ScrollView style={styles.rootContainer}>
       <View style={styles.root}>
@@ -42,12 +57,18 @@ function CreateNewPasswordScreen({route, navigation}) {
         <KeyboardAvoidingView behavior="position" style={styles.rootContainer}>
       <View style={styles.emailContainer}>
       <Input style textConfig={{
-        keyboardType: 'email-address',
+        keyboardType: 'default',
         placeholder: 'Password',
+        value: password,
+        secureTextEntry: true,
+        onChangeText: updateInput.bind(this,'password')
       }} />
       <Input textConfig={{
         keyboardType: 'default',
-        placeholder: 'Password Confirm'
+        placeholder: 'Password Confirm',
+        value: passwordConfirm,
+        secureTextEntry: true,
+        onChangeText: updateInput.bind(this,'passwordConfirm')
       }} />
       </View>
         </KeyboardAvoidingView>

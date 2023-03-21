@@ -15,15 +15,19 @@ function AuthContextProvider({children}){
     const [authUser, setAuthUser] = useState({})
     const [authToken, setAuthToken] = useState()
 
-    function setUser(user){
-        setAuthUser(user)
-        // console.log(user)
-        AsyncStorage.setItem('user', JSON.stringify(user))
+    async function setUser(user){
+        console.log(user,"user")
+        try {
+            setAuthUser(user)
+           await AsyncStorage.setItem('user', JSON.stringify(user))
+            
+        } catch (error) {
+            
+        }
     }
     function authenticate(token){
-        setAuthToken(token)
-        console.log(token)
-        AsyncStorage.setItem('token', token)
+            setAuthToken(token)
+            AsyncStorage.setItem('token', token)
     }
     function logout(){
         setAuthUser(null)

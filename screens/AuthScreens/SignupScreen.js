@@ -23,16 +23,16 @@ function SignupScreen({navigation}) {
       setIsAuthenticating(true)
       try {
           const user = await signup(fullName, email, phoneNumber,password, passwordConfirm)
-          authCtx.authenticate(user.token)
+          // authCtx.authenticate(user.token)
           authCtx.setUser(user.data.user)
           if(user.data.user){
               if(user.data.user.isActive === false){
-                navigation.navigate('EmailVerificationScreen')
+                navigation.navigate('VerifyOtpScreen')
               }
               console.log(user.token)
           } 
       } catch (error) {
-        console.log(error)
+        console.log(error.response.data)
       }
     setIsAuthenticating(false);
   }

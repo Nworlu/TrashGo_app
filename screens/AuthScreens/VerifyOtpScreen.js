@@ -28,9 +28,9 @@ function VerifyOtpScreen({ route, navigation }) {
   const pin3Ref = useRef(null)
   const pin4Ref = useRef(null)
   const [OTP,setOTP] = useState()
-  let forgotPassword = route.params?.forgotP;
+  let forgotPassword = route.params?.forgotPassword;
   forgotPassword = !!forgotPassword;
-//   console.log(forgotPassword);
+  console.log(forgotPassword,"password");
   function backToLoginHandler() {
     navigation.goBack();
   }
@@ -47,15 +47,37 @@ function VerifyOtpScreen({ route, navigation }) {
     setIsAuthenticating(true)
     try {
         let user = await verifyOtp({otpCode:parseInt(otp)})
-        authCtx.authenticate(user.token)
-        authCtx.setUser(user.user)
-        console.log(authCtx.userData)
-        if(authCtx.userData.isActive === true){
+        if(user.data.user.isActive === true){
+            authCtx.setUser(user.data.user)
+            console.log(authCtx.userData)
+            Alert.alert('Successful', 'Please login ')
             navigation.replace('LoginScreen')
         }
         
     } catch (error) {
-        console.log(error)
+        console.log(error.response.data)
+        Alert.alert('Failed',error.response.data.message)
+        
+    }
+    setIsAuthenticating(false);
+
+  }
+  async function verifyOtpHandlerForForgotPass() {
+    setIsAuthenticating(true)
+    try {
+        let user = await verifyOtp({otpCode:parseInt(otp)})
+        if(user.data.user.isActive === true){
+            // authCtx.authenticate(user.token)
+            authCtx.setUser(user.data.user)
+            console.log(authCtx.userData)
+            navigation.navigate('CreateNewPasswordScreen',
+            {
+                forgotPassword
+            })
+        }
+        
+    } catch (error) {
+        console.log(error.response.data)
         
     }
     setIsAuthenticating(false);
@@ -64,9 +86,9 @@ function VerifyOtpScreen({ route, navigation }) {
   if (isAuthenticating) {
     return <LoadingOverlay message="Verifying User's email" />;
   }
-  if (isChangingPass) {
-    return <LoadingOverlay message={"Changing password"} />;
-  }
+//   if (isChangingPass) {
+//     return <LoadingOverlay message={"Changing password"} />;
+//   }
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.root}>
@@ -74,7 +96,7 @@ function VerifyOtpScreen({ route, navigation }) {
           <Text style={styles.title}>Verify That it is you</Text>
         </View>
         <Text style={styles.text}>
-          We have sent a 4 digit otp to {authCtx.userData.email}
+          We have sent a 4 digit otp to {forgotPassword?"Your email": authCtx.userData.email}
         </Text>
         <KeyboardAvoidingView behavior="position" style={styles.rootContainer}>
           <View style={styles.emailContainer}>
@@ -134,9 +156,12 @@ function VerifyOtpScreen({ route, navigation }) {
           </View>
         </KeyboardAvoidingView>
         <View>
-          <PrimaryButton onPress={verifyOtpHandler} style={styles.button}>
+          {!forgotPassword && <PrimaryButton onPress={verifyOtpHandler} style={styles.button}>
+            Verify
+          </PrimaryButton>}
+          {forgotPassword && <PrimaryButton onPress={verifyOtpHandlerForForgotPass} style={styles.button}>
             Confirm
-          </PrimaryButton>
+          </PrimaryButton>}
           {/* {forgotPassword &&<FlatButton space={styles.margin} onPress={backToLoginHandler}>
             Back to Login
         </FlatButton>
