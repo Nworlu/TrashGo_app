@@ -42,7 +42,7 @@ export async function forgotPass(email){
 }
 export async function resetPassword({password,passwordConfirm}){
     // const response = await axios.post(`${apiUrl}/api/v1/user/auth/generatotp/verifyemail`, {email}, {headers:{"Content-Type":"application/json"}})
-    const response = await axios.post(`${apiUrl}/api/v1/user/resetpassword`, JSON.stringify({password,passwordConfirm}), {headers:{"Content-Type":"application/json"}})
+    const response = await axios.patch(`${apiUrl}/api/v1/user/resetpassword`, JSON.stringify({password,passwordConfirm}), {headers:{"Content-Type":"application/json"}})
 
     const otp = response.data
     return otp

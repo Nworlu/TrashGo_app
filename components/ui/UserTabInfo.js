@@ -4,13 +4,11 @@ import { AuthContext } from "../../util/auth-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 function UserTabInfo({fullname}) {
     const authCtx = useContext(AuthContext);
-    const [user,setUser] = useState({})
-    console.log(authCtx.userData,'ddddddddc')
-    console.log(authCtx.token)
+    console.log('Home page', authCtx.userData)
   return (
     <View style={styles.container}>
       <Text style={styles.timeText}>Good Morning</Text>
-      <Text style={styles.text}>{user===null? "":authCtx.userData.fullName}</Text>
+      <Text style={styles.text}>hi</Text>
     </View>
   );
 }

@@ -7,13 +7,15 @@ import {
   Text,
   View,
 } from "react-native";
+import axios from 'axios'
 import Input from "../../components/Auth/Input";
 import FlatButton from "../../components/ui/FlatButton";
 import LoadingOverlay from "../../components/ui/LoadingOverlay";
 import PrimaryButton from "../../components/ui/PrimaryButton";
 import colors from "../../constants/colors";
 import { AuthContext } from "../../util/auth-context";
-import { verifyOtp } from "../../util/http";
+import { resetPassword, verifyOtp } from "../../util/http";
+let apiUrl = "https://trashgo.onrender.com"
 
 function VerifyOtpScreen({ route, navigation }) {
     const authCtx = useContext(AuthContext)
@@ -65,16 +67,20 @@ function VerifyOtpScreen({ route, navigation }) {
   async function verifyOtpHandlerForForgotPass() {
     setIsAuthenticating(true)
     try {
-        let user = await verifyOtp({otpCode:parseInt(otp)})
-        if(user.data.user.isActive === true){
-            // authCtx.authenticate(user.token)
-            authCtx.setUser(user.data.user)
-            console.log(authCtx.userData)
-            navigation.navigate('CreateNewPasswordScreen',
-            {
-                forgotPassword
-            })
-        }
+      const response = await axios.patch(`${apiUrl}/api/v1/user/resetpassword`,{otpCode:parseInt(otp),})
+      // navigation.navigate('CreateNewPasswordScreen',{email:route.params.email})
+      console.log(response)
+        // let user = await resetPassword({otpCode:parseInt(otp)})
+        // console.log(user)
+        // if(user.data.user.isActive === true){
+        //     // authCtx.authenticate(user.token)
+        //     authCtx.setUser(user.data.user)
+        //     console.log(authCtx.userData)
+        //     navigation.navigate('CreateNewPasswordScreen',
+        //     {
+        //         forgotPassword
+        //     })
+        // }
         
     } catch (error) {
         console.log(error.response.data)

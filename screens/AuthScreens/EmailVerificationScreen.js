@@ -54,7 +54,8 @@ function EmailVerificationScreen({ route, navigation }) {
         Alert.alert('Reset Password', user.message)
         if(user){
             navigation.navigate('VerifyOtpScreen',{
-                forgotPassword
+                forgotPassword,
+                email
             })
         }
         console.log(user.message)

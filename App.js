@@ -58,7 +58,6 @@ export default function App() {
         {firstLaunch && (
           <Stack.Screen name="onBoardingScreen" component={OnboardingScreen} />
         )}
-        {role && (
           <Stack.Screen
             options={
               {
@@ -68,7 +67,6 @@ export default function App() {
             name="WelcomeScreen"
             component={WelcomeScreen}
             />
-            )}
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="SignupScreen" component={SignupScreen} />
         <Stack.Screen
@@ -156,40 +154,51 @@ export default function App() {
   }
   function Navigation() {
     let authCtx = useContext(AuthContext);
-
+    const { isLoading, userToken } = useContext(AuthContext)
+    if( isLoading ){
+      return <LoadingOverlay/>
+    }
     return (
       <NavigationContainer>
-        {!authCtx.isAuthenticated && <AuthStack />}
-        {/* <AuthStack/> */}
-        {authCtx.isAuthenticated && <AuthenticatedStack />}
+        {userToken !==null?<AuthenticatedStack/>:<AuthStack/>}
+        {/* {!authCtx.isAuthenticated && <AuthStack />}
+        {authCtx.isAuthenticated && <AuthenticatedStack />} */}
       </NavigationContainer>
     );
   }
-  function Root() {
-    const [isTryingLogin, setIsTryingLogin] = useState(true);
-    let authCtx = useContext(AuthContext);
-    useEffect(() => {
-      async function fetchToken() {
-        const storedToken = await AsyncStorage.getItem("token");
-        if (storedToken) {
-          authCtx.authenticate(storedToken);
-        }
-        setIsTryingLogin(false);
-      }
-      fetchToken();
-    }, []);
+  // function Root() {
+  //   const [isTryingLogin, setIsTryingLogin] = useState(true);
+  //   let authCtx = useContext(AuthContext);
+  //   useEffect(() => {
+  //     async function fetchToken() {
+  //       try {
+  //         let storedToken = await AsyncStorage.getItem("token");
+  //         let userInfo = await AsyncStorage.getItem("user");
+  //         userInfo = JSON.parse(userInfo)
+  //         if (userInfo) {
+  //           authCtx.authenticate(storedToken); 
+  //           authCtx.setUser(userInfo)
 
-    if (isTryingLogin) {
-      return <LoadingOverlay message={"Loading........."} />;
-    }
+  //         }
+  //         setIsTryingLogin(false);
+  //       } catch (error) {
+  //         console.log(`There was an error logging in ${err}`)
+  //       }
+  //     }
+  //     fetchToken();
+  //   }, []);
 
-    return <Navigation />;
-  }
+  //   if (isTryingLogin) {
+  //     return <LoadingOverlay message={"Loading........."} />;
+  //   }
+
+  //   return <Navigation />;
+  // }
   return (
     <>
       <StatusBar style="auto" />
       <AuthContextProvider>
-        <Root />
+        <Navigation />
       </AuthContextProvider>
     </>
   );

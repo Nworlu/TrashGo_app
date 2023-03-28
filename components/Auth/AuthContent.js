@@ -39,15 +39,16 @@ function AuthContent({ isLogin, onAuthenticate }) {
     //     })
     //     return
     // }
-    isLogin
-      ? onAuthenticate({ email, password })
-      : onAuthenticate({
-          fullName,
-          email,
-          phoneNumber,
-          password,
-          passwordConfirm,
-        });
+    onAuthenticate( email, password )
+    // isLogin
+    //   ? onAuthenticate({ email, password })
+    //   : onAuthenticate({
+    //       fullName,
+    //       email,
+    //       phoneNumber,
+    //       password,
+    //       passwordConfirm,
+    //     });
     // onAuthenticate()
   }
   function switchAuthMode() {

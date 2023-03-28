@@ -1,0 +1,135 @@
+// import { createContext, useState } from "react";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// export const AuthContext = createContext({
+//   userData: {},
+//   token: "",
+//   isAuthenticated: false,
+//   authenticate: (token) => {},
+//   logout: () => {},
+//   setUser: (user) => {},
+// });
+
+// function AuthContextProvider({ children }) {
+//   const [authUser, setAuthUser] = useState({});
+//   const [authToken, setAuthToken] = useState(null);
+
+//   function setUser(user) {
+//     setAuthUser(user);
+//     AsyncStorage.setItem("user", JSON.stringify(user));
+//   }
+//   function authenticate(token) {
+//     setAuthToken(token);
+//     AsyncStorage.setItem("token", token);
+//   }
+//   function logout() {
+//     setAuthUser(null);
+//     setAuthToken(null);
+//     AsyncStorage.removeItem("token");
+//     AsyncStorage.removeItem("user");
+//     // console.log(authUser, authToken, "logout");
+//   }
+//   const value = {
+//     userData: authUser,
+//     token: authToken,
+//     isAuthenticated: !!authToken,
+//     logout: logout,
+//     authenticate: authenticate,
+//     setUser: setUser,
+//   };
+//   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+// }
+
+// export default AuthContextProvider;
+
+
+
+// import { createContext, useEffect, useState } from "react";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// import axios from 'axios'
+
+// let apiUrl = "https://trashgo.onrender.com"
+
+// export const AuthContext = createContext();
+
+// function AuthContextProvider({ children }) {
+//   const [isLoading, setIsLoading] = useState(false)
+//   const [userInfo, setUserInfo] = useState(null);
+//   const [userToken, setUserToken] = useState(null);
+
+//   const login = (email,password)=>{
+//     setIsLoading(true)
+//     axios.post(`${apiUrl}/api/v1/user/login`,{
+//         email,
+//         password
+//     },{headers:{"Content-Type":"application/json"}})
+//     .then(res=>{
+//         // console.log(res.data)
+//         let userInfo = res.data
+//         setUserInfo(userInfo)
+//         setUserToken(userInfo.token)
+
+//         AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
+//         AsyncStorage.setItem('userToken', userInfo.token)
+
+//     })
+//     .catch(e=>{ 
+//         console.log(`login error ${e.response.data.error}`)
+//     })
+//     // setUserToken('jhhh')
+//     setIsLoading(false)
+//   }
+//   const logout=()=>{
+//     setIsLoading(true)
+//     setUserToken(null)
+//     AsyncStorage.removeItem('userInfo')
+//     AsyncStorage.removeItem('userToken')
+//     setIsLoading(false)
+//   }
+
+//   const isLoggedIn = async()=>{
+//     try {
+//         setIsLoading(true)
+//         let userToken = await AsyncStorage.getItem('userToken')
+//         let userInfo = await AsyncStorage.getItem('userInfo')
+//         userInfo = JSON.parse(userInfo)
+//         if( userInfo ){
+//             setUserToken(userToken)
+//             setUserInfo(userInfo)
+//         }
+//         setIsLoading(false )
+//     } catch (error) {
+//         console.log(`isLogged in error ${error}`)
+//     }
+//   }
+
+//   useEffect(()=>{
+//     isLoggedIn()
+//   },[])
+
+
+//   return <AuthContext.Provider value={{login,logout, isLoading, userToken, userInfo}}>{children}</AuthContext.Provider>;
+// }
+
+// export default AuthContextProvider;
+
+    // async function loginHandler({email, password}){
+    //   setIsAuthenticating(true)
+    //     try {
+    //         const response = await axios.post(`${apiUrl}/api/v1/user/login`, JSON.stringify({email,password}), {headers:{"Content-Type":"application/json"}})
+    //           authCtx.authenticate(response.data.token)
+    //           authCtx.setUser(response.data)
+              
+    //     } catch (error) {
+    //         // console.log(authCtx.userData)
+    //         Alert.alert('Authentication failed', `${error.response.data.error}`)
+    //         setError(error.response.data.error)
+    //         if(error.response.data.error === 'Please verify your account before you can login'){
+    //             navigation.replace('EmailVerificationScreen')
+    //         }
+    //     }
+    //     setIsAuthenticating(false);
+    // }
+    // if (isAuthenticating) {
+    //     return <LoadingOverlay message="Logging in user" />;
+    // }
