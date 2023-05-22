@@ -13,6 +13,7 @@ import SettingScreen from "../screens/UserSreens/SettingScreen";
 import BookingSummaryScreen from "../screens/UserSreens/BookingSummaryScreen";
 import ProfileScreen from "../screens/UserSreens/ProfileScreen";
 import CompletedRideScreen from "../screens/UserSreens/CompletedRideScreen";
+import NotificationScreen from "../screens/UserSreens/NotificationScreen";
 
 const Tabs = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -39,31 +40,42 @@ function StackNavigator(){
                 backgroundColor: 'white'
             }
         }} />
-        <Stack.Screen name="CompletedRideScreen" component={CompletedRideScreen} options={{
-            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} color={tintColor} size={25} />,
+        <Stack.Screen name="CompletedRideScreen" component={CompletedRideScreen} options={({navigation})=>({
+            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} onPress={()=>navigation.navigate('ProfileScreen')} color={tintColor}  size={25} />,
             title:'Completed Pickups',
             contentStyle:{
                 backgroundColor: 'white'
             }
-        }} />
+        })} />
+        <Stack.Screen name="NotificationScreen" component={NotificationScreen} options={({navigation})=>({
+            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} onPress={()=>navigation.navigate('HomeScreen')} color={tintColor}  size={25} />,
+            title:'Notification',
+            contentStyle:{
+                backgroundColor: 'white'
+            }
+        })} />
     </Stack.Navigator>
 }
 
 function AppStack(){
     const authCtx = useContext(AuthContext)
+    const navigation = useNavigation()
+    function handleNavigation(){
+        navigation.navigate('StackNavigator', {screen: 'NotificationScreen'})
+    }
     return <Tabs.Navigator screenOptions={{
         headerShadowVisible: false,
     }}>
-        <Tabs.Screen options={{
+        <Tabs.Screen options={({navigation})=>({
             headerShadowVisible: false,
-            tabBarIcon: ({color,size})=><Ionicons name="home" color={color} size={size} />,
-            headerRight: ({})=><Ionicons name="notifications" style={styles.icon} color={'black'} size={36} />,
+            tabBarIcon: ({color,size})=><Ionicons name="home-outline" color={color} size={size} />,
+            headerRight: ({})=><Ionicons name="notifications-outline" style={styles.icon} onPress={handleNavigation} color={'black'} size={36} />,
             headerLeft:()=><View style={styles.userContainer}>
                 <Text style={styles.text}>Hi {authCtx.userData.fullName}</Text>
             </View>,
             title: '',
             tabBarLabel: 'Home'
-        }} name="HomeScreen" component={HomeScreen}/>
+        })} name="HomeScreen" component={HomeScreen}/>
         <Tabs.Screen  name="StackNavigator" component={StackNavigator} options={{
           headerShown: false,
           tabBarItemStyle:{
