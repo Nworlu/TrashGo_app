@@ -5,10 +5,46 @@ import {
   Text,
   View,
 } from "react-native";
+import axios from 'axios'
 import Input from "../../../components/Input";
+import { AuthContext } from '../../../context/AuthContext';
 import PrimaryButton from "../../../components/PrimaryButton";
+import { useContext, useState } from "react";
+import LoadingOverlay from "../../../components/LoadingOverlay";
 
+let apiUrl = "https://trashgo.onrender.com"
 function EmailVerificationScreen() {
+  const [enteredEmail,setEnteredEmail] = useState('')
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
+  const authCtx = useContext(AuthContext)
+  function updateInputHandler(inputType, enteredValue){
+    switch (inputType) {
+        case 'email':
+            setEnteredEmail(enteredValue)
+            break;
+}
+  }
+ async function resendEmail(){
+    setIsAuthenticating(true)
+    try {
+    const response = await axios.post(`${apiUrl}/api/v1/auth/resendverification`, JSON.stringify({email:enteredEmail}),   {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "https://trashgo.onrender.com", // replace with your own domain
+      },
+      mode: "cors",
+      credentials: "include",
+    })
+    console.log(response)
+    } catch (error) {
+      console.log(error.response.data)
+    }
+    setIsAuthenticating(false)
+  }
+  if(isAuthenticating){
+    return <LoadingOverlay message='Sending Otp code to user'/>
+}
+
   return (
     <ScrollView style={styles.rootContainer}>
       <View style={styles.root}>
@@ -23,8 +59,8 @@ function EmailVerificationScreen() {
                 inputMode: "email",
                 placeholder: "Email",
                 keyboardType: "email-address",
-                valu: "",
-                onChangeText: () => {},
+                value: enteredEmail,
+                onChangeText: updateInputHandler.bind(this,'email')
               }}
             />
           </View>
@@ -37,6 +73,7 @@ function EmailVerificationScreen() {
               height: 50,
               marginTop: 20,
             }}
+            onPress={resendEmail}
           >
             Send Verification code
           </PrimaryButton>

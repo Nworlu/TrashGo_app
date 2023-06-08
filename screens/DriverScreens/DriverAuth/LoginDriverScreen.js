@@ -9,13 +9,13 @@ import { AuthContext } from '../../../context/AuthContext';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 let apiUrl = "https://trashgo.onrender.com"
 
-function LoginScreen({navigation}){
+function LoginDriverScreen({navigation}){
     const [enteredEmail,setEnteredEmail] = useState('')
     const [enteredPassword, setEnteredPassword] = useState('')
     const [isAuthenticating, setIsAuthenticating] = useState(false)
     const authCtx = useContext(AuthContext)
     function switchAuth(){
-        navigation.navigate('SignupScreen')
+        navigation.navigate('SignupDriverScreen')
     }
     function updateInputHandler(inputType, enteredValue){
         switch (inputType) {
@@ -29,26 +29,24 @@ function LoginScreen({navigation}){
 
     }
     async function loginHandler(){
-        setIsAuthenticating(true)
-        try {
-            const response = await axios.post(`${apiUrl}/api/v1/auth/login`, JSON.stringify({email:enteredEmail,password:enteredPassword}),   {
-                headers: {
-                  "Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "https://trashgo.onrender.com", // replace with your own domain
-                },
-                mode: "cors",
-                credentials: "include",
-              })
-              authCtx.setUserData(response.data.data.user)
-              authCtx.authenicate(response.data.token)
-              console.log(response.data)
-        } catch (error) {
-            console.log(error.response.data)
-            if(error.response.data.error === "Please verifty your account before you can login"){
-                navigation.navigate('EmailVerificationScreen')
-            }
-        }
-        setIsAuthenticating(false)
+      navigation.navigate('StackNavigator', {screen:'ConfirmWasteScreen'})
+        // setIsAuthenticating(true)
+        // try {
+        //     const response = await axios.post(`${apiUrl}/api/v1/user/login`, JSON.stringify({email:enteredEmail,password:enteredPassword}),   {
+        //         headers: {
+        //           "Content-Type": "application/json",
+        //           "Access-Control-Allow-Origin": "https://trashgo.onrender.com", // replace with your own domain
+        //         },
+        //         mode: "cors",
+        //         credentials: "include",
+        //       })
+        //       authCtx.setUserData(response.data.data.user)
+        //       authCtx.authenicate(response.data.token)
+        //       console.log(response.data)
+        // } catch (error) {
+        //     console.log(error.response.data)
+        // }
+        // setIsAuthenticating(false)
     }
 
     if(isAuthenticating){
@@ -61,14 +59,20 @@ function LoginScreen({navigation}){
         <Text style={styles.text}>Welcome Back</Text>
         <KeyboardAvoidingView  behavior="position">
         <View style={styles.inputContainer} >
-            <Input textConfig={{
+          <View style={{marginTop: 0}} >
+          <Text style={{fontWeight: '700', fontSize: 20}}>Phone Number</Text>
+            <Input style={{marginTop:0}} textConfig={{
                 inputMode: 'email',
                 placeholder: 'Email',
                 keyboardType: 'email-address',
                 value: enteredEmail,
                 onChangeText: updateInputHandler.bind(this,'email')
             }}/>
-            <Input textConfig={{
+
+          </View>
+            <View style={{marginTop: 10}}>
+          <Text style={{fontWeight: '700', fontSize: 20}}>Password</Text>
+            <Input style={{marginTop:0}} textConfig={{
                 inputMode: 'none',
                 placeholder: 'Password',
                 keyboardType: 'email-address',
@@ -76,6 +80,7 @@ function LoginScreen({navigation}){
                 onChangeText: updateInputHandler.bind(this,'password'),
                 secureTextEntry: true,
             }}/>
+            </View>
             <View style={styles.button} >
                 <PrimaryButton onPress={loginHandler} style={{width: '100%', marginHorizontal:0, marginBottom:30, height: 50, marginTop: 20}}>
                     Sign In
@@ -102,7 +107,7 @@ function LoginScreen({navigation}){
     </View>
     </ScrollView>
 }
-export default LoginScreen
+export default LoginDriverScreen
 
 const styles = StyleSheet.create({
     loginContainer:{
@@ -121,11 +126,12 @@ const styles = StyleSheet.create({
     inputContainer:{
         justifyContent: 'center',
         flex: 1,
-        marginTop:70
+        marginTop:50
     },
     button:{
-        marginVertical:30,
+        // marginVertical:30,
         justifyContent: 'space-between',
+        width: '100%'
     },
     socialContainer:{
         alignItems: 'center',

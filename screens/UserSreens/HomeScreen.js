@@ -7,8 +7,9 @@ import { AuthContext } from "../../context/AuthContext";
 function HomeScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
   console.log(authCtx);
+  // authCtx.logout()
   function handleNav() {
-    navigation.navigate("StackNavigator", { screen: "BookingSummaryScreen" });
+    navigation.navigate("StackNavigator", { screen: "RequestScreen" });
   }
   return (
     <View style={styles.container}>
@@ -157,5 +158,5 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.57,
   },
- 
+
 });

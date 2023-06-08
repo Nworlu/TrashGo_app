@@ -13,7 +13,7 @@ function WelcomeScreen({navigation}) {
         setRoleOption(value)
         Alert.alert(`You have selected the ${value} role`, `please sign in to continue`)
         if(value === 'driver'){
-            navigation.navigate('LoginScreen')
+            navigation.navigate('LoginDriverScreen')
             console.log(value)
         } else{
             console.log(value)

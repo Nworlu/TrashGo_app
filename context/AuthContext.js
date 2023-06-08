@@ -28,8 +28,8 @@ function AuthContextProvider({children}){
     }
 
     function logout(){
-        setUserInfo(null)
-        setUserToken(null)
+        setUserInfo('')
+        setUserToken('')
         AsyncStorage.removeItem('userToken')
         AsyncStorage.removeItem('userInfo')
     }

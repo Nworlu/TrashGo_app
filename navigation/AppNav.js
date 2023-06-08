@@ -7,9 +7,6 @@ import AuthStack from './AuthStack';
 
 function AppNav(){
     const authCtx = useContext(AuthContext)
-    if(authCtx.isLoading){
-        return <LoadingOverlay message='loading app data' />
-    }
     return <NavigationContainer>
         {authCtx.authenicated? <AppStack/>: <AuthStack/>}
     </NavigationContainer>

@@ -3,7 +3,10 @@ import React from 'react'
 import PrimaryButton from '../../components/PrimaryButton'
 import FlatButton from '../../components/FlatButton'
 
-const RequestPickup = () => {
+const RequestPickup = ({navigation}) => {
+    function handleNavigation() {
+      navigation.navigate('StackNavigator', {screen: 'MapScreen'})
+    }
   return (
     <View style={styles.root}>
       <View style={styles.selectItemContainer}>
@@ -16,7 +19,7 @@ const RequestPickup = () => {
             </View>
         </View>
       </View>
-      <PrimaryButton style={{width: '100%', marginHorizontal:0,height:60}} >
+      <PrimaryButton onPress={handleNavigation} style={{width: '100%', marginHorizontal:0,height:60}} >
         Next
       </PrimaryButton>
     </View>

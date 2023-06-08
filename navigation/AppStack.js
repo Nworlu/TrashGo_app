@@ -14,6 +14,8 @@ import BookingSummaryScreen from "../screens/UserSreens/BookingSummaryScreen";
 import ProfileScreen from "../screens/UserSreens/ProfileScreen";
 import CompletedRideScreen from "../screens/UserSreens/CompletedRideScreen";
 import NotificationScreen from "../screens/UserSreens/NotificationScreen";
+import ConfirmWasteScreen from "../screens/DriverScreens/ConfirmWasteScreen";
+import MapScreen from "../screens/UserSreens/MapScreen";
 
 const Tabs = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -26,34 +28,40 @@ function StackNavigator(){
         <Stack.Screen name="RewardScreen" component={RewardScreen} options={{
             title:'',
         }} />
-        <Stack.Screen name="RequestScreen" component={RequestPickup} options={{
-            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} color={tintColor} size={25} />,
+        <Stack.Screen name="RequestScreen" component={RequestPickup} options={({navigation})=>({
+            headerLeft:({canGoBack,tintColor})=><IconButton onPress={()=>navigation.navigate('HomeScreen')} icon={'arrow-back'} color={tintColor} size={30} />,
             title:'',
             contentStyle:{
                 backgroundColor: 'white'
             }
-        }} />
+        })} />
         <Stack.Screen name="BookingSummaryScreen" component={BookingSummaryScreen} options={{
-            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} color={tintColor} size={25} />,
+            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} color={tintColor} size={30} />,
             title:'Booking Summary',
             contentStyle:{
                 backgroundColor: 'white'
             }
         }} />
         <Stack.Screen name="CompletedRideScreen" component={CompletedRideScreen} options={({navigation})=>({
-            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} onPress={()=>navigation.navigate('ProfileScreen')} color={tintColor}  size={25} />,
+            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} onPress={()=>navigation.navigate('ProfileScreen')} color={tintColor}  size={30} />,
             title:'Completed Pickups',
             contentStyle:{
                 backgroundColor: 'white'
             }
         })} />
         <Stack.Screen name="NotificationScreen" component={NotificationScreen} options={({navigation})=>({
-            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} onPress={()=>navigation.navigate('HomeScreen')} color={tintColor}  size={25} />,
+            headerLeft:({canGoBack,tintColor})=><IconButton icon={'arrow-back'} onPress={()=>navigation.navigate('HomeScreen')} color={tintColor}  size={30} />,
             title:'Notification',
             contentStyle:{
                 backgroundColor: 'white'
             }
         })} />
+            <Stack.Screen name="ConfirmWasteScreen" component={ConfirmWasteScreen} options={({navigation})=>({
+            headerLeft:({tintColor})=><IconButton icon={'arrow-back'} color={tintColor} size={30} />
+        })}/>
+            <Stack.Screen name="MapScreen" component={MapScreen} options={({navigation})=>({
+            headerLeft:({tintColor})=><IconButton icon={'arrow-back'} color={tintColor} size={30} />
+        })}/>
     </Stack.Navigator>
 }
 

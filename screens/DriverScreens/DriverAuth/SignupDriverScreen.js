@@ -11,7 +11,7 @@ import colors from "../../../constant/colors";
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import { AuthContext } from '../../../context/AuthContext';
 const apiURL = 'https://trashgo.onrender.com'
-function SignupScreen({navigation}){
+function SignupDriverScreen({navigation}){
     const authCtx = useContext(AuthContext)
     const [enteredFullName, setEnteredFullName] = useState('')
     const [enteredEmail, setEnteredEmail] = useState('')
@@ -69,7 +69,7 @@ const data = {
    async function submitHandler(){
         setIsAuthenticating(true)
         try {
-            const response = await axios.post(`${apiURL}/api/v1/auth/signup`, JSON.stringify(data),   {
+            const response = await axios.post(`${apiURL}/api/v1/user/signup`, JSON.stringify(data),   {
                 headers: {
                   "Content-Type": "application/json",
                   "Access-Control-Allow-Origin": "https://trashgo.onrender.com", // replace with your own domain
@@ -79,6 +79,7 @@ const data = {
               })
               console.log(authCtx.userData)
               authCtx.setUserData(response.data.data.user)
+              authCtx.authenicate(response.data.token)
              if(response.data.data.user.isActive !== true){
                 navigation.navigate('VerifyOtpScreen')
              }
@@ -166,7 +167,7 @@ const data = {
     </View>
 
 }
-export default SignupScreen
+export default SignupDriverScreen
 
 const styles = StyleSheet.create({
     root:{
