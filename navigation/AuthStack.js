@@ -17,18 +17,18 @@ function AuthStack(){
         headerShown: false
     }}>
         {/* <Stack.Screen name="OnBoarding" component={OnBoardingScreen} /> */}
-        <Stack.Screen options={{
+        {/* <Stack.Screen options={{
             headerShown: true,
             headerShadowVisible: false
         }} name="WelcomeScreen" component={WelcomeScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="SignupScreen" component={SignupScreen} />
         <Stack.Screen name="EmailVerificationScreen" component={EmailVerificationScreen} />
-        <Stack.Screen name="VerifyOtpScreen" component={VerifyOtpScreen} />
+        <Stack.Screen name="VerifyOtpScreen" component={VerifyOtpScreen} /> */}
 
         {/* Drvier Auth */}
-        <Stack.Screen name="LoginDriverScreen" component={LoginDriverScreen} />
-        <Stack.Screen name="SignupDriverScreen" component={SignupDriverScreen} />
+        {/* <Stack.Screen name="LoginDriverScreen" component={LoginDriverScreen} />
+        <Stack.Screen name="SignupDriverScreen" component={SignupDriverScreen} /> */}
 
         {/* <Stack.Screen name="CreateNewPasswordScreen" component={CreateNewPasswordScreen} /> */}
     </Stack.Navigator>
